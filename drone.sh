@@ -24,6 +24,7 @@ rm -rf .*
 mv /tmp/.git .
 git checkout gh-pages
 mv /tmp/html/* .
+touch .nojekyll
 
 # Git push
 git add -A .
