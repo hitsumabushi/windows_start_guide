@@ -28,6 +28,6 @@ mv /tmp/build/* .
 # Git push
 git add -A .
 git commit -m "Build by drone.io"
-git remote set-url origin git@github.com:hitsumabushi/blog.git
+git remote set-url origin git@github.com:hitsumabushi/windows_start_guide.git
 git push -f origin gh-pages  # forced push
 
