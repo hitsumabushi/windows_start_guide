@@ -16,10 +16,13 @@ git checkout -b gh-pages
 
 # copy output to top of repository
 mv build /tmp
+mv .git /tmp
 
 # Remove unpublish files
 rm -rf *
 rm -rf .*
+mv /tmp/.git .
+git checkout gh-pages
 mv /tmp/build/* .
 
 # Git push
