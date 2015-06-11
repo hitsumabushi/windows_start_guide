@@ -1,5 +1,7 @@
 # windows_start_guide
 
+[![Build Status](https://drone.io/github.com/hitsumabushi/windows_start_guide/status.png)](https://drone.io/github.com/hitsumabushi/windows_start_guide/latest)
+
 Markdown -> reStructuredText への変換は、[mistymagich/sphinx-markdown](https://github.com/mistymagich/sphinx-markdown)。
 
 ## How To Build
