@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Windows Start Guide's documentation!
+Windows Server スタートガイド
 ===============================================
+
+Windows Serverを使ったことがないのだけど、
+使う必要が発生したので、少し真面目にまとめてみる。
 
 Contents:
 
