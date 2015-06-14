@@ -5,3 +5,6 @@
 
     最も参考にしている本。コンパクトではないが、一通り載っている。
 
+## Web上のドキュメント
+- [Windows Server 2012 の検証](https://technet.microsoft.com/ja-jp/windowsserver/hh553001)
+
