@@ -1,26 +1,49 @@
 # ネットワーク
+## NICのチーミング
+[Windows Server 2012 R2 NIC Teaming (LBFO) Deployment and Management](https://www.microsoft.com/en-us/download/details.aspx?id=40319) を参照のこと。
 
-# Active Directory
+### 概要
+- 同じ速度のNICを32個までメンバーにできる
+- VLANに対応
+- 一部利用できない機能もある
+    + SR-IOV
+    + DRMA
+    + TCP Chimney
+- スタンバイアダプタの設定ができる
 
-# Windows Serverでのサービスのインストール
+### チーミングのモード
+- Switch Independent Configuration
+- Switch Dependent Configuration
+    + Generic or Static Teaming/IEEE 802.3ad Draft v1
+    + Dynamic Teaming/IEEE 802.1ax, LACP
 
-# クラスタリング
+### 負荷分散モード
+- アドレスのハッシュ
+- Hyper-Vポート
+- 動的 (上記2つの組み合わせ)
 
-# 監視
+## PowerShellでネットワーク設定
+### IP/DNS
+```PowerShell
+New-NetIPAddress
+  -InterfaceAlias <Interface Name>
+  -IPAddress <IP Address>
+  -PrefixLength <Prefix Length>
+  -DefaultGateway <Default Gateway IP Address>
 
-# セキュリティ
+Set-DnsClientServerAddress
+  -InterfaceAlias <Interface Name>
+  -ServerAddress <DNS Server Address>
+```
 
-# Windows 自動化について
-## PowerShell
-- 初心者用リソース
-    - [Windows PowerShell Basics](https://technet.microsoft.com/ja-jp/library/dd347730.aspx)
-    - [Windows PowerShell: スクリプト作成の短期集中講座](https://technet.microsoft.com/ja-jp/magazine/hh551144.aspx)
-- 管理用の情報
-    - [Windows Server 2012R2サーバーの管理性および自動化 - ホワイトペーパー](http://download.microsoft.com/download/A/8/B/A8BF66E5-B315-49D0-8EBE-02263B221DCC/Windows_Server_2012_R2_Server_Management_and_Automation_White_Paper.pdf)
-    - [Windows Server 2012R2サーバーの管理性および自動化](http://download.microsoft.com/download/B/2/0/B20A660F-787F-4C17-8CE6-35E9789E2CB1/Windows-Server-2012-R2-Server-Management-and-Automation.pdf)
-- コマンドリファレンス
-    + [Windows and Windows Server Automation with Windows PowerShell](https://technet.microsoft.com/ja-jp/library/dn249523.aspx)
+### NICチーミング
+```PowerShell
+Add-NetLbfoTeamNic <Team name> -VlanID <VLAN ID>
+```
 
-## sysprepについて
-### できること/できないこと
-### 使い方
+## ネットワーク設定確認系コマンド
+- ipconfig
+- ping
+- route
+- tracert
+

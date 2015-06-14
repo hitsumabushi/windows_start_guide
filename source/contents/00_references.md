@@ -8,3 +8,6 @@
 ## Web上のドキュメント
 - [Windows Server 2012 の検証](https://technet.microsoft.com/ja-jp/windowsserver/hh553001)
 
+### ネットワーク設定
+- [Windows Server 2012 R2 NIC Teaming (LBFO) Deployment and Management](https://www.microsoft.com/en-us/download/details.aspx?id=40319)
+
