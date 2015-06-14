@@ -1,25 +1,24 @@
 # ユーザー管理/グループ管理
-# Active Directory
+## 認証設定
+設定できる項目としては、
+1. ユーザーによるパスワード変更可否
+2. パスワードの有効期間
+3. アカウントを無効にする
+4. ロックアウトポリシー
+    - Administrator はロックアウトできないため、パスワードの管理/変更に注意する
 
-# Windows Serverでのサービスのインストール
+## ユーザーの権限設定
+権限を付与するには、権限が付与されているグループにメンバーとして追加するか、ローカルセキュリティポリシーに登録する。
 
-# クラスタリング
+## Powershell
+### ローカルユーザーの作成・削除
+```Powershell
+NET USER <Username> /add /fullname:<full name> /comment:<comment>
+NET USER <Username> /delete
+```
+### ローカルグループの作成・削除
+```Powershell
+NET LOCALGROUP /add <Group Name> /comment:<comment>
+NET LOCALGROUP /delete <Group Name>
+```
 
-# 監視
-
-# セキュリティ
-
-# Windows 自動化について
-## PowerShell
-- 初心者用リソース
-    - [Windows PowerShell Basics](https://technet.microsoft.com/ja-jp/library/dd347730.aspx)
-    - [Windows PowerShell: スクリプト作成の短期集中講座](https://technet.microsoft.com/ja-jp/magazine/hh551144.aspx)
-- 管理用の情報
-    - [Windows Server 2012R2サーバーの管理性および自動化 - ホワイトペーパー](http://download.microsoft.com/download/A/8/B/A8BF66E5-B315-49D0-8EBE-02263B221DCC/Windows_Server_2012_R2_Server_Management_and_Automation_White_Paper.pdf)
-    - [Windows Server 2012R2サーバーの管理性および自動化](http://download.microsoft.com/download/B/2/0/B20A660F-787F-4C17-8CE6-35E9789E2CB1/Windows-Server-2012-R2-Server-Management-and-Automation.pdf)
-- コマンドリファレンス
-    + [Windows and Windows Server Automation with Windows PowerShell](https://technet.microsoft.com/ja-jp/library/dn249523.aspx)
-
-## sysprepについて
-### できること/できないこと
-### 使い方
