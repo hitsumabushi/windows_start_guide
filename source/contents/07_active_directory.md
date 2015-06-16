@@ -19,6 +19,6 @@
 - コマンドリファレンス
     + [Windows and Windows Server Automation with Windows PowerShell](https://technet.microsoft.com/ja-jp/library/dn249523.aspx)
 
-## sysprepについて
+## AIK・sysprepについて
 ### できること/できないこと
 ### 使い方
