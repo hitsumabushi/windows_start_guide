@@ -67,6 +67,49 @@ Windows Server 2012から、**gMSA(group Managed Service Account)** という機
       - あるコンテナに適用されるGPOは以下で決まる(継承関係ではよく見る普通のやつ)
           - 『継承ツリーの中で、自分より上位で、自分に最も近いGPO』
 
+#### GPOの設定項目
+GPOを設定するには、以下の2種類の機能を理解する必要がある。
+
+1. ポリシー
+    - 設定項目のこと
+    - 基本設定よりも優先される
+    - 新しいポリシーを作成する難易度が高いため、基本は用意されているポリシーを利用する
+    - 以下の項目がある
+        - ソフトウェアの設定
+            - ソフトウェア配布を行うための設定
+        - Windowsの設定
+            - セキュリティ設定やログオン時のスクリプトなど
+            - フォルダリダイレクトの設定もここ
+        - 管理用テンプレート
+            - レジストリベースのポリシー設定
+            - 管理用テンプレートファイルを追加して項目を増やすことが可能
+                - ADMタイプ  : GPOごとにファイルがコピーされるため、パフォーマンスに劣る
+                - ADMXタイプ : Windows Server 2008で利用可能。普通はこちらを利用する。
+                    1. セントラルストアを作成
+                    2. デフォルトポリシーのコピー
+                    3. ADMX管理テンプレートを以下に追加
+                        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions` 以下
+                        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions\ja-JP` 以下
+2. 基本設定
+    - Windows Server 2008より前のOSで利用するには、*グループポリシーの基本設定クライアント側拡張機能*という更新プログラムを適用する必要がある
+    - 柔軟なグループポリシーを設定しやすい
+
+#### GPOの更新方法
+GPOはデフォルトでは、**クライアントコンピュータは90分に1回、ドメインコントローラは5分に1回**の頻度で更新される。
+1. (クライアント側)手動更新
+    ```PowerShell
+    # 更新
+    gpupdate /force
+    # 更新状況確認
+    gpupdate /R
+    ```
+2. リモートからの更新
+    事前に、**スターターGPO**を使い、更新対象のコンピュータのWindows FWフィルタを設定しておく必要がある。(つまりこの作業は最初から行っておく)
+
+#### GPOの運用
+1. GPOは定期的にバックアップを取得しておく
+2. GPOを変更する場合影響が非常に大きいため、*グループポリシーの結果機能*を利用するなどして、適用して問題ないことを確認する
+
 
 # Windows Serverでのサービスのインストール
 
@@ -86,6 +129,7 @@ Windows Server 2012から、**gMSA(group Managed Service Account)** という機
     - [Windows Server 2012R2サーバーの管理性および自動化](http://download.microsoft.com/download/B/2/0/B20A660F-787F-4C17-8CE6-35E9789E2CB1/Windows-Server-2012-R2-Server-Management-and-Automation.pdf)
 - コマンドリファレンス
     + [Windows and Windows Server Automation with Windows PowerShell](https://technet.microsoft.com/ja-jp/library/dn249523.aspx)
+- Active Directory管理センターの、履歴ビューア機能
 
 ## AIK・sysprepについて
 ### できること/できないこと
