@@ -9,6 +9,9 @@ Windows Server スタートガイド
 Windows Serverを使ったことがないのだけど、
 使う必要が発生したので、少し真面目にまとめてみる。
 
+ただし、細かな手順は書かない。
+Windows Serverを使って、『何ができるか』のポインタとして参照できるようにしたいと思う。
+
 Contents:
 
 .. toctree::
