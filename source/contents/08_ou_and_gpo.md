@@ -83,16 +83,19 @@ GPOを設定するには、以下の2種類の機能を理解する必要があ�
         - 管理用テンプレート
             - レジストリベースのポリシー設定
             - 管理用テンプレートファイルを追加して項目を増やすことが可能
-                - ADMタイプ  : GPOごとにファイルがコピーされるため、パフォーマンスに劣る
-                - ADMXタイプ : Windows Server 2008で利用可能。普通はこちらを利用する。
-                    1. セントラルストアを作成
-                    2. デフォルトポリシーのコピー
-                    3. ADMX管理テンプレートを以下に追加
-                        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions` 以下
-                        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions\ja-JP` 以下
 2. 基本設定
     - Windows Server 2008より前のOSで利用するには、*グループポリシーの基本設定クライアント側拡張機能*という更新プログラムを適用する必要がある
     - 柔軟なグループポリシーを設定しやすい
+
+管理用テンプレートについては、以下の2つのタイプがある。
+利用できる状況であれば、ADMXタイプのテンプレートを利用するようにしよう。
+- ADMタイプ  : GPOごとにファイルがコピーされるため、パフォーマンスに劣る
+- ADMXタイプ : Windows Server 2008で利用可能。普通はこちらを利用する。作成手順は以下の通り。
+    1. セントラルストアを作成
+    2. デフォルトポリシーのコピー
+    3. ADMX管理テンプレートを以下に追加
+        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions` 以下
+        - `%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions\ja-JP` 以下
 
 #### GPOの更新方法
 GPOはデフォルトでは、**クライアントコンピュータは90分に1回、ドメインコントローラは5分に1回**の頻度で更新される。
