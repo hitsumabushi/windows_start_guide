@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Windows Server スタートガイド
+Windows Server 初心者向け機能ガイド
 ===============================================
 
 Windows Serverを使ったことがないのだけど、
