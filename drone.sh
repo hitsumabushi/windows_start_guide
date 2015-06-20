@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 set -x
 
-# package install
+# pandoc install
+## need >= v1.11 : trusty has v1.12 pandoc
+sudo sed -i.back -e 's/precise/trusty/g' /etc/apt/sources.list
 sudo apt-get update -qq
 sudo apt-get install pandoc
+
+# Add cabal PATH
+export PATH=${HOME}/.cabal/bin:${PATH}
 
 # resolv dependency
 pip install -r requirements.txt --use-mirrors
