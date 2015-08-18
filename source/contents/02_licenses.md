@@ -3,6 +3,7 @@
 **TODO: 以下の内容を読んで、まとめる**
 特に、SPLAまわりはまだ読んでない
 
+- [ライセンス まるごと 早わかりガイド](http://download.microsoft.com/download/A/2/8/A28985D6-78DE-41A4-B5EA-6FA0270D824B/LicenseQuickStartGuide.pdf)
 - 通常の利用
     - [コア ライセンスの概要と基本的な定義 - マイクロソフト ボリューム ライセンス ガイド](https://www.microsoft.com/ja-jp/licensing/about-licensing/briefs/licensing-by-cores.aspx)
     - [仮想環境で使用する Microsoft サーバー製品のライセンス - マイクロソフト ボリューム ライセンス ガイド](https://www.microsoft.com/ja-jp/licensing/about-licensing/briefs/virtual-licensing.aspx)
