@@ -2,9 +2,45 @@
 
 ## リモート実行
 
+### 前準備
+まず、実行マシン、対象マシンの両方で WinRMを有効にする。
+`Enable-PSRemoting` コマンドレットで有効にできる。
+
+### 実行
+`Invoke-Commad` というコマンドレットで実行できる。
+
+```PowerShell
+# Computer01 のプロセスを取得
+Invoke-Commad Computer01 { Get-Process }
+# 現在のユーザーと異なるユーザーでアクセスする必要がある場合
+Invoke-Commad Computer01 -Credential username { Get-Process }
+```
+
+### セッションの利用
+
+毎回、セッション作成・削除が起こると無駄なのでセッション情報を保持する。
+セッションを利用すれば、セッション中は変数を共有できるので、そういう意味でもセッションの方が汎用性が高く、便利。
+セッション利用時のフローを説明する。
+
+```PowerShell
+# セッション作成
+$session = New-PSSession -ComputerName Computer01
+# セッションを使ってコマンド実行
+Invoke-Commad -Session $session { Get-Process }
+# もしくは、セッションにEnterする
+Enter-PSSession $session
+#...
+exit
+# セッション削除
+Remove-PSSession
+```
+
 ## ワークフロー
+処理を確実に最後まで実行するための仕組み。
+*TODO*
 
 ## バックグラウンド実行
+*TODO*
 
 ## PSドライブ
 PowerShellから階層構造を持つリソースに、簡単にアクセスするためのもの。
