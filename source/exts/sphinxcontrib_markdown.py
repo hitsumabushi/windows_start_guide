@@ -10,7 +10,7 @@ from tempfile import mkstemp
 class MarkdownProcessor(object):
 
     def on_source_read(self, app, docname, source):
-        if docname == 'index':
+        if docname == 'index' or docname == 'README':
             return
 
         try:
