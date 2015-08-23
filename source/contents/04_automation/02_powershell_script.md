@@ -39,6 +39,12 @@ C:\foo.ps1
 Set-ExecutionPolicy RemoteSigned
 ```
 
+パラメータの指定は、連想配列を用いても良い。
+```PowerShell
+$param = @{LogName="Windows PowerShell"; Newest=5}
+Get-EventLog @param -EntryType Information
+```
+
 ### Dynamic Invoke
 また、マイナー機能として PowerShell Version 4から、Dynamic Invokeができる。
 あまり使わないほうが良いと思う。
@@ -300,7 +306,6 @@ Set-Content test.txt "foobar" -encoding UTF8
 # リダイレクト
 Get-Process | Out-File test.txt -encoding UTF8
 ```
-
 
 ### 比較演算子
 - 一般的な比較
