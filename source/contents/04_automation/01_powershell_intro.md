@@ -18,8 +18,9 @@ Windowsのシェル実行環境のこと。
 ### 特徴
 
 PowerShellの特徴として、以下のようなものがある。
-1. コマンド形式は、 {動詞}-{名詞} の形式
+1. コマンド形式は、 {動詞}-{名詞} の形式 
 2. 各コマンドは、 .NET Framework のオブジェクトを出力する
+    - と、世の説明(Windows PowerShell ポケットリファレンス)には書いてあるが、COMオブジェクトも返ってくるのではないか、と思っている
     - 実際には、少し拡張されている。PowerShellのディレクトリの types.ps1.xml にある
 3. WindRMなどの管理系ツールとの連携がある
     - PowerShell DSC(Desired State Configuration) と呼ばれる宣言的な管理フレームワークがWindows onlyな環境では便利に見える
@@ -45,4 +46,31 @@ PowerShellの特徴として、以下のようなものがある。
 - `ConvertFrom-String`
 - デバッグ系の充実
 - PowerShell ISE を利用したリモートのファイル編集
+
+## PowerShell を実行する方法
+
+- PowerShell.exe で
+    - 対話的に実行
+    - `powershell -command {_実行したいコマンド_}`
+    - `powershell -file _スクリプトへのパス_`
+- PowerShell ISE で開発/実行
+
+### Execution-Policy の設定
+
+PowerShell はセキュリティ機能の一貫として、スクリプトの実行ポリシーを持っている。
+これにより、しばしばスクリプトが実行できない。
+その場合、`Set-ExecutionPolicy` コマンドを利用して、ポリシーを変更する必要がある。
+よく使うものは、以下の4つ。
+
+- Restricted
+    - クライアントOSや古いServerでのデフォルト
+    - すべてのスクリプトを実行しない
+- AllSigned
+    - 信頼できる署名のあるコードのみ実行
+- RemoteSigned
+    - Windows Server 2012 R2 でのデフォルト
+    - ダウンロードしたスクリプトについては、信頼できる署名のあるコードのみ実行
+    - ローカルファイルは署名なしで実行可能
+- ByPass
+    - すべてのファイルを実行時の確認プロンプトなしに実行する
 

@@ -13,26 +13,38 @@ Windows Serverを使ったことがないのだけど、
 Windows Serverを使って、『何ができるか』のポインタとして参照できるようにしたいと思う。
 
 1. 全体的な参考文献
+
   .. toctree::
      :maxdepth: 1
 
      contents/00_references
 
 2. Windows の基本情報
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     contents/01_basics/*
+
+3. Windows 管理者向け情報
+
   .. toctree::
      :maxdepth: 1
      :glob:
 
      contents/02_admin/*
 
-3. Windows の運用
+4. Windows の運用
+
   .. toctree::
      :maxdepth: 1
      :glob:
 
      contents/03_ops/*
 
-4. Windows の自動化
+5. Windows の自動化
+
   .. toctree::
      :maxdepth: 1
      :glob:
