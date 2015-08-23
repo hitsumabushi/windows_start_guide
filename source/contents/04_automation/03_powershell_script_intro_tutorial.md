@@ -48,14 +48,35 @@ PS> Pop-Location
 PS> Get-ChildItem
 ```
 
-## パラメータを使う
-
-### スプラッティング
-
 ## パイプラインを使う
+
+```PowerShell
+<#
+'C:\Program Files\Common Files\System' ディレクトリの中で、ファイルサイズのもっとも大きいファイルは何か?
+#>
+```
+
+```PowerShell
+<#
+'C:\Program Files\Common Files\System' ディレクトリの中で、ファイルサイズが100KBより大きなものは何個あるか?
+#>
+```
+
+```PowerShell
+<#
+環境変数の一覧を、変数名でソートして、 $HOME\env.txt に保存
+#>
+```
 
 ## 繰り返しを使う
 
+```PowerShell
+<#
+現在実行されているプロセスについて、ID順にソートされた、
+ID名,プロセス名
+というCSV形式で出力する
+#>
+```
 
 ## 練習問題
 
