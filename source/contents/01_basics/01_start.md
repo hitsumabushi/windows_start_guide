@@ -59,7 +59,7 @@ Standard, Datacenterのライセンスについては、後で詳しく書く。
 ## バージョンとサポート期間
 
 Windows Serverのバージョンは現状では、以下の表のようになっている。
-サポート期間は、[マイクロソフト サポート ライフサイクル](https://support.microsoft.com/ja-jp/lifecycle/search?sort=PN&alpha=Windows%20Server&Filter=FilterNO)からの抜粋。
+サポート期間は、 [マイクロソフト サポート ライフサイクル](https://support.microsoft.com/ja-jp/lifecycle/search?sort=PN&alpha=Windows%20Server&Filter=FilterNO) からの抜粋。
 エディションごとの差異としては、Essentialのみ、サポート期間が特殊。
 
 | Version                | リリース   | メインストリーム | 延長サポート |
