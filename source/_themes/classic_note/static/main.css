@@ -166,7 +166,7 @@ div#document {
   border-style: solid;
   border-color: #DDDDff;
   border-width: thin;
-  line-height: 2.0em;
+  line-height: 1.6em;
 }
 div#document * h1{
   font-family: 'Migu 1P', 'Bitstream Vera Sans', 'Sans', cursive;
