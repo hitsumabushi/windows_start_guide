@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Active Directory &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="OUとGPO" href="10_ou_and_gpo.html" />
+    <link rel="prev" title="ユーザー管理/グループ管理" href="../01_basics/06_user_management.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="active-directory">
+<h1>Active Directory<a class="headerlink" href="#active-directory" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>Active Directoryでできること<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="arabic simple">
+<li>認証/承認の管理</li>
+<li>SSO</li>
+<li>デスクトップ環境の統一 (グループポリシーの利用)</li>
+<li>セキュリティ更新プログラムの配布 (WSUS)</li>
+<li>監査記録 (監査機能の利用)<ul>
+<li>ファイルサーバー上のファイルに対するアクセス記録を取得できる</li>
+</ul>
+</li>
+<li>AD BAによるライセンス管理</li>
+</ol>
+<div class="section" id="id2">
+<h3>最近の注目の機能<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic simple">
+<li>Workplace Join<ul>
+<li>割と注目されている機能の1つ</li>
+<li>ドメインに参加できないiOSなどのデバイスに対して、デバイス認証に基づいてリソースへのアクセスを提供する<ul>
+<li>Windows 7/8のProより下のエディションなども&#8221;参加&#8221;はできない</li>
+<li>Windows 8は、&#8221;参加&#8221;できないが、Workplace
+Joinによって、&#8221;登録&#8221;はできる</li>
+</ul>
+</li>
+<li>AD FSに加え、DRS(Device Registration Service)が必要</li>
+</ul>
+</li>
+<li>多要素認証<ul>
+<li>AD FSで多要素認証が使えるようになった</li>
+</ul>
+</li>
+<li>Dynamic Access Control<ul>
+<li>ユーザーなどのプロパティを元にアクセス権を自動設定する</li>
+</ul>
+</li>
+<li>Direct Accessオフラインドメイン参加<ul>
+<li>Direct Access
+環境がセットアップされていると、インターネット経由でドメインに参加できる</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h3>Active Directory のサービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>AD DS<ul>
+<li>Active Directory ドメインサービス</li>
+<li>IDの集約・認証</li>
+</ul>
+</li>
+<li>AD LDS<ul>
+<li>LDAP機能を担当</li>
+</ul>
+</li>
+<li>AD CS<ul>
+<li>Active Directory 証明書サービス</li>
+<li>証明書の発行・管理</li>
+</ul>
+</li>
+<li>AD FS<ul>
+<li>Active Directory フェデレーションサービス</li>
+<li>異なる認証基盤での連携を行う</li>
+<li>Azureとの連携を行うなど</li>
+</ul>
+</li>
+<li>AD RMS<ul>
+<li>Active Directory Rights Managementサービス</li>
+<li>コンテンツの保護を行うサービス</li>
+<li>Microsoft Officeの文書を暗号化できる</li>
+<li>利用には、RMS CAL ライセンスが必要</li>
+</ul>
+</li>
+<li>AD BA<ul>
+<li>Active Directory-Based Activation</li>
+<li>Windows Server 2012以降と、Windows 8以降のライセンス認証をADで行う</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>Active Directoryの概念<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h3>基本概念<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>ディレクトリデータベース<ul>
+<li>スキーマ情報、構成情報、ドメイン情報を保持しているもの</li>
+<li>ドメイン情報はドメインごとに異なるが、そのほかは、フォレスト単位</li>
+</ul>
+</li>
+<li>信頼関係<ul>
+<li>信頼関係にあるドメイン(もしくは、フォレスト)は、お互いの共有フォルダや、共有プリンタなどのリソースにアクセスできる</li>
+<li>フォレスト内に複数のドメインがある場合に、認証を高速に行う必要がある場合、ショートカットの信頼関係を結ぶ</li>
+</ul>
+</li>
+<li>グローバルカタログ<ul>
+<li>フォレスト全体のディレクトリ全体における、目次のようなデータ</li>
+<li>フォレスト内のドメインにあるすべてのオブジェクト名と、一部の属性を保持</li>
+<li>グローバルカタログを保持するサーバーをグローバルカタログサーバーという。複数作成しておく</li>
+</ul>
+</li>
+<li>フォレスト<ul>
+<li>ADの最も大きな操作単位</li>
+<li>グローバルカタログを共有する範囲</li>
+<li>複数のドメインツリーを含み、その中の各々のドメインは互いに信頼関係が成立</li>
+<li>管理者が異なる場合、スキーマを分ける場合などに分割される</li>
+</ul>
+</li>
+<li>ドメインツリー<ul>
+<li>ドメインの親子関係を表現した木構造</li>
+<li>子ドメイン名は親ドメイン名を継承する</li>
+<li>ドメインツリーに参加するドメインは互いに信頼関係が成立</li>
+</ul>
+</li>
+<li>ドメイン<ul>
+<li>同じディレクトリデータベースを共有する範囲</li>
+<li>アカウント, ポリシーなどを管理する基本的な単位</li>
+<li>ドメイン名には、DNS名やNetBIOS名を利用可能</li>
+<li>拠点が離れている場合や、異なる言語のドメインコントローラを利用する場合、アカウントが組織ごとに個別に管理されている場合に分割する</li>
+</ul>
+</li>
+<li>ドメインコントローラ<ul>
+<li>ディレクトリデータベースを持つサーバー</li>
+<li>各ドメインに必ず1台以上必要</li>
+<li>RODC(Read Only Domain Controller)と呼ばれるものも作成できる</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>機能レベル<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">機能レベルは、OSのバージョンによって表現され、</div>
+<div class="line">機能レベルを利用するには、すべてのドメインコントローラをその機能が利用できるバージョンのOSに更新する必要がある。</div>
+<div class="line">機能レベルには、フォレストの機能レベルと、ドメインの機能レベルの2種類が存在する。</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>ディレクトリデータベースの複製<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">ドメイン内の複製では、スキーマ/構成/ドメイン情報をそのまま複製するが、</div>
+<div class="line">マルチドメインでの複製では、スキーマ/構成は複製し、ドメインについては、次ドメインのものを格納していくことになる。</div>
+</div>
+<div class="section" id="id8">
+<h4>データベース構成<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="56%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">種類</th>
+<th class="head">格納されている情報</th>
+<th class="head">複製範囲</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>スキーマ</td>
+<td>AD内のクラスやオブジェクトのスキーマ</td>
+<td>フォレスト</td>
+</tr>
+<tr class="row-odd"><td>構成情報</td>
+<td>フォレスト、ドメインの構成情報</td>
+<td>フォレスト</td>
+</tr>
+<tr class="row-even"><td>ドメイン</td>
+<td>ドメイン内のオブジェクト情報</td>
+<td>ドメイン</td>
+</tr>
+<tr class="row-odd"><td>アプリケーション</td>
+<td>アプリケーションごとのADに格納したい情報</td>
+<td>色々</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>サイト<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>サイトを分割しておくと、遅延の大きい拠点との通信を減らしたり良い感じにしてくれる(サイトリンク)。</p>
+</div>
+<div class="section" id="id10">
+<h3>その他のActive Directoryのコンポーネント<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">グローバルカタログサーバー</p>
+<ul class="simple">
+<li>複数のグローバルカタログサーバーを作成し、冗長性を確保する</li>
+</ul>
+</li>
+<li><p class="first">操作マスター (FSMO ロール)</p>
+<ul>
+<li><p class="first">デフォルトでは1台目のドメインコントローラが5つのロールを全て持つ</p>
+</li>
+<li><p class="first">マルチドメイン構成では、インフラストラクチャマスターとグローバルカタログサーバーを共存できない</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="11%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">役割</th>
+<th class="head">単位</th>
+<th class="head">機能</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>スキーママスター</td>
+<td>フォレストに1つ</td>
+<td>スキーマを管理するマスター</td>
+</tr>
+<tr class="row-odd"><td>ドメイン名前付けマスター</td>
+<td>フォレストに1つ</td>
+<td>ドメインの追加・削除を行う際のマスター</td>
+</tr>
+<tr class="row-even"><td>PDC エミュレータ</td>
+<td>ドメインに1つ</td>
+<td>Windows NT時代のOSのために必要。後述するNTPの時刻合わせでも重要</td>
+</tr>
+<tr class="row-odd"><td>RIDマスター</td>
+<td>ドメインに1つ</td>
+<td>RID(Relative ID)プールをドメインコントローラに割り当てる</td>
+</tr>
+<tr class="row-even"><td>インフラストラクチャマスター</td>
+<td>ドメインに1つ</td>
+<td>ドメインのオブジェクトインスタンスの整合性を保証。自ドメインのオブジェクトから他ドメインのオブジェクトへの参照の更新など</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li><p class="first">DNSサーバー</p>
+<ul class="simple">
+<li>Active
+DirectoryのDNSサーバーを利用することで、DNSサーバーのデータをディレクトリ複製に含められる</li>
+<li>レコードのアクセス権の設定</li>
+<li>SRVレコードの動的更新</li>
+</ul>
+</li>
+<li><p class="first">NTPサーバー</p>
+<ul class="simple">
+<li>PDCエミュレータの機能を持つドメインコントローラがNTPサーバーとして動作</li>
+<li>各ドメインコントローラは、PDCエミュレータの機能を持つドメインコントローラの時刻に同期</li>
+<li>ドメインに参加したドメインコントローラの時刻に同期</li>
+<li>つまり、特にPDCエミュレータとなるWindows
+Serverの時刻設定には注意しよう</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>Active Directory の運用<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id12">
+<h3>バックアップについて<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">バックアップの取得は、1日に1回など短い間隔で取得することが望ましい。</div>
+<div class="line">間隔を長くしたい場合に気をつけることとして、以下の2つがある</div>
+</div>
+<ol class="arabic simple">
+<li>Tombstoneに設定されている有効期間<ul>
+<li>Active
+Directoryはこの<strong>Tombstoneに設定されている有効期限より以前のバックアップデータからの復元を禁止</strong>している</li>
+<li>デフォルトは180日</li>
+</ul>
+</li>
+<li>コンピュータアカウントのパスワード更新期間<ul>
+<li>ドメインコントローラとドメインに参加しているメンバーは<strong>セキュアチャネル</strong>と呼ばれる通信チャネルを使っている。このセキュアチャネルを確立するためのパスワードは定期的に更新される。</li>
+<li>ドメインコントローラ側では、常に最新のメンバーのパスワードのみを保持し、クライアント側では、<strong>1世代前まで</strong>のパスワードも保持される</li>
+<li>つまり、クライアント側が保持しているパスワードを利用するには、1世代前までのバックアップにしか戻せない(それより以前に戻してしまうと、ドメインに参加できなくなり、再参加するしかなくなる)</li>
+<li>デフォルトでは、30日</li>
+</ul>
+</li>
+</ol>
+<div class="section" id="tombstone">
+<h4>オブジェクトの削除とTombstoneについて<a class="headerlink" href="#tombstone" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="line-block">
+<div class="line">ごみ箱機能が有効かどうかによって削除時の処理が異なる。</div>
+<div class="line">(ごみ箱機能は**一度有効にすると、無効にできない**)</div>
+</div>
+<ol class="arabic simple">
+<li>オブジェクトの削除処理を実行</li>
+<li>オブジェクトのisDeleted属性がTrueに変更</li>
+<li><em>Deleted Object</em>というコンテナに移動</li>
+<li>(ごみ箱機能が有効な場合)
+属性情報は削除されないまま、所定日数(<em>Deleted Object
+Lifetime</em>)経過まで保持<ul>
+<li>デフォルトは Deleted Object Lifetime=180日</li>
+</ul>
+</li>
+<li>オブジェクトの属性情報が削除。所定日数(<strong>Tombstone
+Lifetime</strong>/<strong>Recycled Object Lifetime</strong>)経過まで待機
+(<strong>Tombstone</strong>状態)<ul>
+<li>デフォルトは 180日</li>
+</ul>
+</li>
+<li>データベースから完全に削除される</li>
+</ol>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>復元について<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">復元に際して、対象のドメインコントローラを<strong>ディレクトリサービス復元モード</strong>で起動する必要がある。</div>
+<div class="line">実際の復元は2つの方法があり、名前がややこしいが、使いわけを把握しておけば良い。</div>
+</div>
+<ol class="arabic simple">
+<li>権限のない復元<ul>
+<li>USNを変更せずにそのまま復元する</li>
+<li>主にActive Directoryのデータベースを復元するために利用する</li>
+</ul>
+</li>
+<li>権限のある復元<ul>
+<li><code class="docutils literal"><span class="pre">USN</span> <span class="pre">+=</span> <span class="pre">100,000</span></code>として復元する</li>
+<li>誤って削除したオブジェクトを復元する場合に利用する</li>
+</ul>
+</li>
+</ol>
+<div class="section" id="usn">
+<h4>USNについて<a class="headerlink" href="#usn" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="line-block">
+<div class="line">USNとは、オブジェクトのタイムスタンプのようなもの。</div>
+<div class="line">ドメインコントローラは、複製に際して、USNを比較し、相手のUSNが大きい場合に複製を行う。</div>
+<div class="line">例えば、削除時にもtombstone状態になる時に、USNが更新される。そのため、権限の&#8221;ない&#8221;復元を実行しても、削除状態のほうが最新という扱いをされてしまうので、意味がない。</div>
+</div>
+</div>
+</div>
+<div class="section" id="id14">
+<h3>ドメインコントローラのクローン/スナップショットについて<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>この部分については、<a class="reference external" href="https://msdn.microsoft.com/ja-jp/library/hh831734.aspx">Active Directory ドメイン サービス (AD DS)
+の仮想化 (レベル 100)
+の概要</a>を参照すると良い。</p>
+<div class="line-block">
+<div class="line">VM-GeneratedIDをサポートしているやつだと、USNに不具合などは起きないらしい。</div>
+<div class="line">ただ、AD関係でも以下のものはクローン/スナップショットをサポートしていない。</div>
+</div>
+<ul class="simple">
+<li>DHCP サーバー</li>
+<li>Active Directory証明書サービス</li>
+<li>Active Directoryライトウェイトディレクトリサービス</li>
+</ul>
+<p>他にも条件や設定があるため、あまりこの機能は頼らないほうが良い。</p>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="../01_basics/06_user_management.html">Prev</a></li>
+    
+    
+      <li><a href="10_ou_and_gpo.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

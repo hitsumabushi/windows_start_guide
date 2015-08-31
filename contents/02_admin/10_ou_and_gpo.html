@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OUとGPO &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="Windows Serverでのサービスのインストール" href="99_todo.html" />
+    <link rel="prev" title="Active Directory" href="01_active_directory_basics.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="ougpo">
+<h1>OUとGPO<a class="headerlink" href="#ougpo" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="ou-organization-unit">
+<h2>OU (Organization Unit)について<a class="headerlink" href="#ou-organization-unit" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">ユーザー,</div>
+</div>
+<p>グループやコンピュータなどのリソースをオブジェクトと呼ぶ。これらのリソースをまとめて管理するためのオブジェクトがOU。
+| このOUは、実際には、Active
+Directoryのオブジェクトを格納する構造体である、コンテナの一種。</p>
+<p>コンテナの種類は、以下の通り。</p>
+<ol class="arabic simple">
+<li>OU<ul>
+<li>管理者が自由に作成可能</li>
+<li>グループポリシーをリンクできる</li>
+<li>下位にOUを作成して階層構造にできる</li>
+<li>特定のユーザ/グループに管理を委任できる</li>
+</ul>
+</li>
+<li>デフォルトのコンテナ<ul>
+<li>ユーザーでは作成できない</li>
+<li>グループポリシーもリンクできない</li>
+<li>下位にOUを作成して階層構造することができない</li>
+</ul>
+</li>
+</ol>
+<div class="line-block">
+<div class="line">デフォルト設定では、ユーザオブジェクトはUsersコンテナ、コンピュータオブジェクトはComputersコンテナに格納されるなどする。</div>
+<div class="line">できる限り、ユーザオブジェクト用OUなどを作成し、作成したOUに格納されるように設定を変更する方が柔軟な設計が可能になる。</div>
+<div class="line">ただし、ドメインコントローラだけは、<a href="#id1"><span class="problematic" id="id2">**</span></a>もともとの &#8220;Domain</div>
+</div>
+<p>Controllers&#8221; OUから移動しない**ことが推奨。(Default Domain Controllers
+Policy というグループポリシーが適用済みのため。)</p>
+<div class="section" id="ou">
+<h3>OUの設計について<a class="headerlink" href="#ou" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>分けるべきもの<ul>
+<li>オブジェクトの種類: ユーザ/コンピュータ/グループ/サーバ...</li>
+<li>管理者がことなる部分</li>
+</ul>
+</li>
+<li>分けるべきでないもの<ul>
+<li>変更が頻繁な(部門など)組織単位<ul>
+<li>分社単位など、変更の少ない単位で分けるのはあり。この場合、各組織単位で分けた中で、一般的なOUを作成する</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="powershell-ou">
+<h3>PowerShell: OUの追加・削除<a class="headerlink" href="#powershell-ou" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="code Powershell highlight-python"><div class="highlight"><pre># OU追加
+New-ADOrganizationalUnit -Name &quot;01ユーザ&quot; -Path &quot;DC=org01,DC=itd-corp,DC=JP&quot;
+
+# OU削除
+Remove-ADOrganizationalUnit -Identity &quot;OU=01ユーザ,DC=org01,DC=itd-corp,DC=JP&quot; -Confirm:$false
+
+# デフォルトコンテナの変更
+redirusr &quot;OU=01ユーザ,DC=org01,DC=itd-corp,DC=JP&quot;
+redircmp &quot;OU=03コンピュータ,DC=org01,DC=itd-corp,DC=JP&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>サービスアカウントの管理<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">サービスを実行するアカウントとして、独自に生成したユーザーで行う場合、アカウント管理が煩雑になりがち。</div>
+<div class="line">Windows Server 2008までには、MSA(Managed Service</div>
+</div>
+<p>Account)という機能があり、パスワード更新の処理が自動化されていたが、複数のコンピュータでアカウントを共有できなかった。
+| Windows Server 2012から、<strong>gMSA(group Managed Service Account)</strong>
+という機能へ拡張され、サービスアカウントの認証を統一できるようになった。</p>
+<div class="section" id="gmsa">
+<h3>gMSAの展開手順<a class="headerlink" href="#gmsa" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>TODO: 手順の追加</strong></p>
+<ol class="arabic simple">
+<li>KDSルートキー作成</li>
+<li>gMSAの作成</li>
+<li>gMSAのサービスへの割り当て</li>
+</ol>
+</div>
+</div>
+<div class="section" id="gpo-group-policy-object">
+<h2>グループポリシーとGPO(Group Policy Object)<a class="headerlink" href="#gpo-group-policy-object" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h3>グループポリシー<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ドメインに参加しているクライアントコンピューターの環境設定やセキュリティ設定を管理する機能。</p>
+</div>
+<div class="section" id="gpo">
+<h3>GPO<a class="headerlink" href="#gpo" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">クライアントコンピューターに適用するポリシーをまとめたオブジェクト。</div>
+<div class="line">コンピューターごとに定義する<strong>ローカルGPO</strong>というものもあるが、以後単にGPOと言った場合には、Active</div>
+</div>
+<p>DirectoryベースのGPOを指すことにする。</p>
+<div class="section" id="id5">
+<h4>GPOの適用と継承関係<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="arabic simple">
+<li>GPOはサイトやドメインなどのコンテナに割り当てる(これを<em>リンクする</em>という)<ul>
+<li>リンクされると、そのコンテナに属する全てのクライアントコンピューターやユーザーにGPOが適用される</li>
+</ul>
+</li>
+<li>GPOは継承される<ul>
+<li>あるコンテナにGPOをリンクすると、下位のコンテナにもGPOが適用される</li>
+<li>あるコンテナに適用されるGPOは以下で決まる(継承関係ではよく見る普通のやつ)<ul>
+<li>『継承ツリーの中で、自分より上位で、自分に最も近いGPO』</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id6">
+<h4>GPOの設定項目<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>GPOを設定するには、以下の2種類の機能を理解する必要がある。</p>
+<ol class="arabic simple">
+<li>ポリシー<ul>
+<li>設定項目のこと</li>
+<li>基本設定よりも優先される</li>
+<li>新しいポリシーを作成する難易度が高いため、基本は用意されているポリシーを利用する</li>
+<li>以下の項目がある<ul>
+<li>ソフトウェアの設定<ul>
+<li>ソフトウェア配布を行うための設定</li>
+</ul>
+</li>
+<li>Windowsの設定<ul>
+<li>セキュリティ設定やログオン時のスクリプトなど</li>
+<li>フォルダリダイレクトの設定もここ</li>
+</ul>
+</li>
+<li>管理用テンプレート<ul>
+<li>レジストリベースのポリシー設定</li>
+<li>管理用テンプレートファイルを追加して項目を増やすことが可能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基本設定<ul>
+<li>Windows Server
+2008より前のOSで利用するには、<em>グループポリシーの基本設定クライアント側拡張機能</em>という更新プログラムを適用する必要がある</li>
+<li>柔軟なグループポリシーを設定しやすい</li>
+</ul>
+</li>
+</ol>
+<div class="line-block">
+<div class="line">管理用テンプレートについては、以下の2つのタイプがある。</div>
+<div class="line">利用できる状況であれば、ADMXタイプのテンプレートを利用するようにしよう。</div>
+</div>
+<ul class="simple">
+<li>ADMタイプ : GPOごとにファイルがコピーされるため、パフォーマンスに劣る</li>
+<li>ADMXタイプ : Windows Server
+2008で利用可能。普通はこちらを利用する。作成手順は以下の通り。<ol class="arabic">
+<li>セントラルストアを作成</li>
+<li>デフォルトポリシーのコピー</li>
+<li>ADMX管理テンプレートを以下に追加<ul>
+<li><code class="docutils literal"><span class="pre">%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions</span></code> 以下</li>
+<li><code class="docutils literal"><span class="pre">%SystemRoot%SYSVOL\domain\Policies\PolicyDefinitions\ja-JP</span></code>
+以下</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h4>GPOの更新方法<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>GPOはデフォルトでは、<strong>クライアントコンピュータは90分に1回、ドメインコントローラは5分に1回</strong>の頻度で更新される。</p>
+<ol class="arabic">
+<li><p class="first">(クライアント側)手動更新</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre><span class="c"># 更新</span>
+<span class="n">gpupdate</span> <span class="o">/</span><span class="n">force</span>
+<span class="c"># 更新状況確認</span>
+<span class="n">gpupdate</span> <span class="o">/</span><span class="n">R</span>
+</pre></div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line">リモートからの更新</div>
+<div class="line"><br /></div>
+</div>
+<p>事前に、<strong>スターターGPO</strong>を使い、更新対象のコンピュータのWindows
+FWフィルタを設定しておく必要がある。(つまりこの作業は最初から行っておく)</p>
+</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h4>GPOの運用<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="arabic simple">
+<li>GPOは定期的にバックアップを取得しておく</li>
+<li>GPOを変更する場合影響が非常に大きいため、<em>グループポリシーの結果機能</em>を利用するなどして、適用して問題ないことを確認する</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="01_active_directory_basics.html">Prev</a></li>
+    
+    
+      <li><a href="99_todo.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

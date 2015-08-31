@@ -1,0 +1,534 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PowerShell 入門 &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="チュートリアル" href="03_powershell_script_intro_tutorial.html" />
+    <link rel="prev" title="PowerShell の概要" href="01_powershell_intro.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="powershell">
+<h1>PowerShell 入門<a class="headerlink" href="#powershell" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>触れないこと:</p>
+<ul class="simple">
+<li>class</li>
+<li>function, filter, script block</li>
+<li>module</li>
+<li>event</li>
+</ul>
+<div class="section" id="id1">
+<h2>基本文法チュートリアル<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h3>コマンド<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>改行 または &#8221;;&#8221; 区切りで記述される</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># コマンドレット, サービスの一覧を取得
+Get-Command; Get-Service
+# Windows PowerShell のイベントログのうち、Information のものを取得
+Get-EventLog -LogName &#39;Windows PowerShell&#39; -EntryType Information
+
+# サブ式
+## 変数に代入するなどで利用する
+$(Get-ChildItem)
+
+# スクリプトブロックの実行 : スコープが別スコープになる
+## 変数に代入するなどで利用する
+&amp;{Get-Command}
+
+# exe の実行
+C:\Windows\System32\notepad.exe
+# プログラムのパスにスペースが含まれている場合には、&amp; を用いる
+&amp; &#39;C:\Program Files\Internet Explorer\iexplorer.exe&#39; -k
+
+# ps1 ファイルの実行
+C:\foo.ps1
+# ドットソース
+. C:\foo.ps1
+## もし実行ポリシーでのエラーがでる場合 (Windows Server 2012 R2 ではデフォルトで RemoteSigned のはず)
+Set-ExecutionPolicy RemoteSigned
+</pre></div>
+</div>
+<p>パラメータの指定は、連想配列を用いても良い。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$param = @{LogName=&quot;Windows PowerShell&quot;; Newest=5}
+Get-EventLog @param -EntryType Information
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-invoke">
+<h3>Dynamic Invoke<a class="headerlink" href="#dynamic-invoke" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">また、マイナー機能として PowerShell Version 4から、Dynamic</div>
+</div>
+<p>Invokeができる。
+| あまり使わないほうが良いと思う。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$method = &quot;GetType&quot;
+$HOME.$method()
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>ワイルドカード<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>使える文字種は、<code class="docutils literal"><span class="pre">*,</span> <span class="pre">?,</span> <span class="pre">[]</span></code>。</p>
+<div class="highlight-python"><div class="highlight"><pre># C:\Users\ 以下のPから始まるディレクトリを表示
+Get-ChildItem C:\Users\p*
+# aから始まる2文字の名前で拡張子 .txtのファイルを表示
+Get-ChildItem a?.txt
+# foo0.txt ~ foo9.txt を表示
+Get-ChildItem foo[0-9].txt
+# foo1.txt, foo4.txt を表示
+Get-ChildItem foo[14].txt
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">逆に、ファイル名にこのような文字列を使っている場合 <code class="docutils literal"><span class="pre">-Path</span></code></div>
+</div>
+<p>パラメータで指定するとうまく動作しない。
+| エスケープするか、 <code class="docutils literal"><span class="pre">-LiteralPath</span></code>を使うと良い。</p>
+</div>
+<div class="section" id="id4">
+<h3>コメント<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># 単一行のコメント
+
+&lt;#
+複数行のコメント
+を書く場合に利用する
+#&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>変数<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">PowerShell では宣言は必要なく、どんな型の値も代入できる。</div>
+<div class="line">変数は、<code class="docutils literal"><span class="pre">$variable_name</span></code> という形式か、</div>
+</div>
+<p><code class="docutils literal"><span class="pre">${variable_name}</span></code>という形式。
+| 型を指定して代入することもできるが、変換できない時にはエラーが出る。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$foo = 1
+# int 指定
+[int]$foo = 1
+
+# 以下はエラーが出る
+# [int]$foo = &quot;Not integer&quot;
+
+# PSドライブのアイテムは変数のようにアクセスできる
+${Env:Path}
+</pre></div>
+</div>
+<div class="section" id="id6">
+<h4>スコープ<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>変数のスコープは、3つある。</p>
+<ul class="simple">
+<li>global<ul>
+<li>どのスコープからでも読み書きできる</li>
+</ul>
+</li>
+<li>private<ul>
+<li>現在のスコープのみ読み書きできる</li>
+</ul>
+</li>
+<li>script<ul>
+<li>現在のスクリプト内のみ読み書きできる</li>
+</ul>
+</li>
+</ul>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># globalスコープの例
+$global:variable_name = 1
+</pre></div>
+</div>
+<p>また、セッション間で変数を渡すには、<code class="docutils literal"><span class="pre">using:$variable_name</span></code>
+というように指定する</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>各種の型<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>変数は型を持っている。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$a = 1
+
+# 型を調べる
+$a.GetType().FullName
+
+# キャスト
+## もし変換できない場合には、エラーになる
+$b = [System.String]$a
+## もし変換できない場合には、 $null になる
+$b = $a -as [System.String]
+
+# 型の比較
+$a -is [System.String] #=&gt; False
+$a -isnot [System.String] #=&gt; True
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">ちなみに、いくつかの型にはエイリアスが設定されている。</div>
+<div class="line">int型は、System.Int32型のエイリアスになっている。</div>
+</div>
+<div class="section" id="id8">
+<h4>数値<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># 基本的な演算子 : 対応する複合代入演算子が存在する
+1+2 #=&gt; 3
+1-2 #=&gt; -1
+1*2 #=&gt; 3
+1/2 #=&gt; 0.5 ※整数の範囲で割り算したい場合には、%と組み合わせる
+1%2 #=&gt; 1
+
+# ベキ乗 : .NET Framework の スタティックメソッドの利用
+[math]::Pow(2, 10) #=&gt; 1024
+
+# 符号の反転
+- $a
+
+1 -lt 5
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h4>文字列<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="line-block">
+<div class="line">文字列リテラルは、 <code class="docutils literal"><span class="pre">&quot;</span></code></div>
+</div>
+<p>(ダブルクォート)または、<code class="docutils literal"><span class="pre">'</span></code>(シングルクォート)で囲んで表現される。
+| 両者の違いは、Linuxのシェルと同様、変数展開の有無。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$str=&quot;foo&quot;
+&quot;${str}&quot; #=&gt; foo
+&#39;${str}&#39; #=&gt; ${str}
+</pre></div>
+</div>
+<p>エスケープについては、`(バッククォート)で行われる。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$str=&quot;foo&quot;
+&quot;`&quot;${str}`&quot;&quot; #=&gt; &quot;foo&quot;
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">さらに複数行の文字列を記述する際には、ヒアドキュメントが利用できる。</div>
+<div class="line">ヒアドキュメントは <code class="docutils literal"><span class="pre">&#64;&quot;...&quot;&#64;</span></code> または <code class="docutils literal"><span class="pre">&#64;'...'&#64;</span></code> という構文になる。</div>
+</div>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$str=@&quot;
+Foo
+Bar
+&quot;@
+</pre></div>
+</div>
+<p>文字列の操作については、長さの取得、および結合/繰り返し/分割/...
+は以下の通り。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># 長さ
+&quot;aaa&quot;.Length
+# 結合
+&quot;aaa&quot; + &quot;bbb&quot;
+@(&quot;foo&quot;, &quot;bar&quot;, &quot;lol&quot;) -join &quot;, &quot;
+# 繰り返し
+&quot;foo&quot; * 10
+# 分割
+&quot;foo, bar, lol&quot; -split &quot;, &quot;
+# 切り出し
+&quot;foobar&quot;.SubString(2, 4)
+# 置換
+&quot;foobarlol&quot; -replace &quot;oo&quot;, &quot;a&quot;
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">次に正規表現によるマッチも可能。だけど、以下の方法だと</div>
+</div>
+<p>$matchesは最初のマッチしか参照できない。
+| 複数のマッチを参照したい場合には、
+.NETのregexオブジェクトを利用する必要がある。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># 簡易的なマッチ
+&quot;abcdefg&quot; -match &quot;b(.)(.)(?&lt;last&gt;.)&quot; #=&gt; True
+$matches[0] #=&gt; bced
+$matches[1] #=&gt; c
+$matches[&quot;last&quot;] #=&gt; e
+
+# 後方参照
+&quot;abcdefg&quot; -replace &quot;b(.)(.)(?&lt;last&gt;.)&quot;, &quot;b`$2`$1&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h4>配列<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">&#64;(...)</span></code> で配列を作成できる。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$a = @()
+$a = 1, 2, 3, 4
+$a = 1..4
+$single = 1; $a = ,$single
+$a = $(Get-ChildItem test*)
+</pre></div>
+</div>
+<p>配列の各要素を取り出すには、何番目か指定する以外に、アンパック代入的な方法や、foreachを利用して取り出せる。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$a = 1..10
+$a[4]
+# 4番目~7番目を取り出す(配列のインデックスは0から始まる)
+$a[3..6]
+$a[3..10-4]
+# 最後の要素の取り出し
+$a[-1]
+# 4以下の要素のみ取り出す
+$a -le 4
+# 2以上4以下の要素のみ取り出す
+$a -le 4 -ge 2
+
+# 配列のメンバのメソッドを呼ぶ (暗黙的な foreach)
+$str=@(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+$str.ToUpper()
+</pre></div>
+</div>
+<p>配列の操作は以下のようなものがある。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$a = 1..10
+$b = @(1, 4, 6)
+# push
+$a += 11
+# 結合
+$c = $a + $b
+
+# 束縛演算子
+$a -contains 5
+5 -in $a
+</pre></div>
+</div>
+<p>また、比較演算子を用いて、配列と文字列/数値などを比較した場合、Trueになる要素だけを返す。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>$a = 1..10
+$a -gt 4
+</pre></div>
+</div>
+</div>
+<div class="section" id="id11">
+<h4>連想配列<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">&#64;{key1=val1;</span> <span class="pre">key2=val2}</span></code> と作成する。</div>
+<div class="line">値の参照は、 <code class="docutils literal"><span class="pre">$hash.key</span></code> または <code class="docutils literal"><span class="pre">$hash[&quot;key&quot;]</span></code> として参照する。</div>
+</div>
+<p>もし、どうしても順序を保った連想配列を作成したい場合は、<code class="docutils literal"><span class="pre">[ordered]&#64;{key1=val1;</span> <span class="pre">key2=val2}</span></code>
+として作成する。</p>
+<p>連想配列については、 <code class="docutils literal"><span class="pre">Add</span></code>や<code class="docutils literal"><span class="pre">Remove</span></code>のほか、 <code class="docutils literal"><span class="pre">Keys</span></code>,
+<code class="docutils literal"><span class="pre">Values</span></code>, <code class="docutils literal"><span class="pre">Contains</span></code> といった一般的なメソッドが利用できる。</p>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>パイプラインとリダイレクト<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>パイプラインを使う用途として、オブジェクトの適当なプロパティだけを取り出したり、必要なオブジェクトだけにフィルタする、グループ化・ソートしたいといった目的がある。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># プロパティでフィルタ
+## プロセスのIDとプロセス名だけを表示
+Get-Process | Select-Object id,Name | Format-List
+
+# 必要なオブジェクトだけにフィルタ
+## ファイルサイズが10KB以上のファイルのみを調べる
+Get-ChildItem &#39;C:\Program Files\Common Files\System&#39; | Where-Object {$_.Length -gt 10KB}
+
+# コマンドの中でどのコマンドタイプが多いか調べる
+Get-Command | Group-Object -Property CommandType
+# その結果を少ない順に並べる
+Get-Command | Group-Object -Property CommandType | Sort-Object -Property Count
+Get-Command | Group-Object -Property CommandType | Sort-Object -Property Count | Select-Object -Last 1
+
+# ForEach-Object の利用
+## ForEach-Object 内では、パイプラインで渡されたオブジェクト1つずつが $_ に束縛される
+Get-Process | ForEach-Object { Write-Host $_.ID }
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">次に、リダイレクトについては、Linuxと同様でも問題ないが、<code class="docutils literal"><span class="pre">Out-File</span></code>を使う方がおすすめ。</div>
+<div class="line">日本語環境でのWindowsのデフォルトエンコーディングは</div>
+</div>
+<p>Shift-JISのため、単にリダイレクトすると面倒。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># 単なるファイルの書き込み
+Set-Content test.txt &quot;foobar&quot; -encoding UTF8
+
+# リダイレクト
+Get-Process | Out-File test.txt -encoding UTF8
+</pre></div>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>比較演算子<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>一般的な比較<ul>
+<li>大文字・小文字を区別しない : -eq, -ne, -gt, -ge, -lt, -le</li>
+<li>大文字・小文字を区別 : -ceq, -cne, -cgt, -cge, -clt, -cle</li>
+</ul>
+</li>
+<li>論理演算子<ul>
+<li>-and, -or, -xor, -not(!)</li>
+</ul>
+</li>
+<li>ビット演算子<ul>
+<li>-band, -bor, -bxor, -bnot</li>
+<li>-shr, -shl : ビットシフト演算子</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h3>制御構文<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="if-elseif-else">
+<h4>if ~ elseif ~ else<a class="headerlink" href="#if-elseif-else" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>if (cond) {
+} elseif (cond) {
+} else {
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch">
+<h4>switch<a class="headerlink" href="#switch" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>割と複雑な構文。switchの引数に与えたオブジェクトは、switch内で <code class="docutils literal"><span class="pre">$_</span></code>
+で参照できる。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>switch [-regex|-wildcard|-exact|-casesensitive|-file](object) {
+  val1 { ... ;break}
+  val2 { ... ;break}
+  {cond1} { ... ;break}
+  {cond2} { ... ;break}
+  default {...}
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="while-do">
+<h4>while/do<a class="headerlink" href="#while-do" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>while (cond) {
+}
+
+do {
+} while (cond)
+</pre></div>
+</div>
+</div>
+<div class="section" id="for">
+<h4>for<a class="headerlink" href="#for" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>for ($i = 0; $i -lt 100; $i++) {
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="foreach-foreach-object">
+<h4>foreach (ForEach-Object)<a class="headerlink" href="#foreach-foreach-object" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>foreach($process in Get-Process) {
+  $process.Name
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>エラー処理<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下の2つを分けて考える必要がある。</p>
+<ul class="simple">
+<li>PowerShellで発生したエラー<ul>
+<li>存在しないコマンドを実行した場合など</li>
+</ul>
+</li>
+<li>コマンドレットで発生したエラー<ul>
+<li>Get-Process -Name not-exist など、パラメータがおかしい場合など</li>
+</ul>
+</li>
+</ul>
+<p>PowerShellで発生したエラーを扱うための構文として、</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;# trap
+trapは挙動が変わっていて、エラーが発生した行でtrapのブロック内が実行され、
+trapブロック内でbreak していない場合には、元の箇所の次に戻って、引き続き処理が継続される。
+#&gt;
+## すべてのエラーを trap
+trap {
+}
+## 特定のエラーを trap
+trap [System.IO.IOException]{
+}
+
+# 一般的な try catch
+## catch でエラーの型を指定して catchできる
+try {
+} catch [System.Net.WebException], [...] {
+} finally {
+}
+</pre></div>
+</div>
+<p>というものがある。</p>
+<div class="line-block">
+<div class="line">一方で、コマンドレットのエラーを処理するにはどうすれば良いか?</div>
+<div class="line"><code class="docutils literal"><span class="pre">-ErrorAction</span></code>, <code class="docutils literal"><span class="pre">-ErrorVariable</span></code> を利用するのが良いと思う。</div>
+</div>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>Get-Process -Name not_exist_process -ErrorAction SilentlyContinue -ErrorVariable variable
+if ( $variable.Count -ne 0 ) {
+  # もし、エラーが発生していたら
+  ...
+}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="01_powershell_intro.html">Prev</a></li>
+    
+    
+      <li><a href="03_powershell_script_intro_tutorial.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

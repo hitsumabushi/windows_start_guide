@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Windows Server の概要 &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="ライセンス" href="02_licenses.html" />
+    <link rel="prev" title="参考文献集" href="../00_references.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="windows-server">
+<h1>Windows Server の概要<a class="headerlink" href="#windows-server" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>Windows Server できること<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="arabic simple">
+<li>いろんなサーバーが立てられる<ul>
+<li>DNS</li>
+<li>IPAM</li>
+<li>File Server</li>
+<li>...</li>
+</ul>
+</li>
+<li>認証を管理できる<ul>
+<li>ユーザーのアカウントポリシーとかを管理できる</li>
+<li>ダイナミックアクセス制御というのが新しい機能</li>
+<li>ワークプレースジョインというのが、BYOD的な時に使う機能</li>
+</ul>
+</li>
+<li>仮想化ホストになれる</li>
+<li>冗長化クラスターを組める</li>
+</ol>
+<p>また、新しい機能については、Windows Server
+2012R2の新機能、非推奨の機能を見ると良い。</p>
+<ul class="simple">
+<li><a class="reference external" href="https://technet.microsoft.com/ja-jp/library/dn250019.aspx">Windows Server
+の新機能</a></li>
+<li><a class="reference external" href="https://technet.microsoft.com/ja-jp/library/dn303411.aspx">Windows Server 2012 R2
+で削除された機能または推奨されなくなった機能</a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>エディション<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h3>Windows Server のエディション<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">最近は4つだけ知っておけば良い。</div>
+<div class="line">Standard, Datacenterのライセンスについては、後で詳しく書く。</div>
+</div>
+<ul class="simple">
+<li>Foundation<ul>
+<li>OEM製品についてる(つまり物理のみ)</li>
+<li>小規模向け</li>
+<li>仮想化できない</li>
+<li>1プロセッサ(2CPU), 最大15ユーザ</li>
+<li>その他、管理機能や認証で制限あり</li>
+</ul>
+</li>
+<li>Essentials<ul>
+<li>中小企業向けエディション</li>
+<li>仮想化できない</li>
+<li>2プロセッサ(4CPU), 最大25ユーザー/50デバイス</li>
+<li>その他、管理機能や認証で制限あり</li>
+</ul>
+</li>
+<li>Standard<ul>
+<li>機能的には、Datacenterと変わらない</li>
+<li>仮想インスタンスの数が2つまで</li>
+</ul>
+</li>
+<li>Datacenter<ul>
+<li>なんでもできる</li>
+<li>仮想インスタンスも無制限</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="sql-server">
+<h3>SQL Server のエディション<a class="headerlink" href="#sql-server" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下の3つだけ知ってれば大丈夫。</p>
+<ul class="simple">
+<li>Standard<ul>
+<li>基本機能</li>
+<li>コア数単位、ユーザー数単位のどちらのライセンスもある</li>
+</ul>
+</li>
+<li>Business Intelligence<ul>
+<li>BIツールが使える</li>
+<li>ユーザー数単位のライセンス</li>
+</ul>
+</li>
+<li>Enterprise<ul>
+<li>レポート、分析機能が使える</li>
+<li>コア数単位のライセンスのみ</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>バージョンとサポート期間<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">Windows Serverのバージョンは現状では、以下の表のようになっている。</div>
+<div class="line">サポート期間は、 <a href="#id5"><span class="problematic" id="id6">`</span></a>マイクロソフト サポート</div>
+</div>
+<p>ライフサイクル &lt;<a class="reference external" href="https://support.microsoft.com/ja-jp/lifecycle/search?sort=PN&amp;alpha=Windows%20Server&amp;Filter=FilterNO">https://support.microsoft.com/ja-jp/lifecycle/search?sort=PN&amp;alpha=Windows%20Server&amp;Filter=FilterNO</a>&gt;`__
+からの抜粋。
+| エディションごとの差異としては、Essentialのみ、サポート期間が特殊。</p>
+<ul class="simple">
+<li>Windows Server OS</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="18%" />
+<col width="26%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Version</th>
+<th class="head">リリース</th>
+<th class="head">メインストリーム</th>
+<th class="head">延長サポート</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Windows Server 2008</td>
+<td>2008年</td>
+<td>2015/01/13</td>
+<td>2020/01/14</td>
+</tr>
+<tr class="row-odd"><td>Windows Server 2008 R2</td>
+<td>2009年</td>
+<td>2015/01/13</td>
+<td>2020/01/14</td>
+</tr>
+<tr class="row-even"><td>Windows Server 2012</td>
+<td>2012年</td>
+<td>2018/01/19</td>
+<td>2023/01/10</td>
+</tr>
+<tr class="row-odd"><td>Windows Server 2012 R2</td>
+<td>2013年</td>
+<td>2018/01/19</td>
+<td>2023/01/10</td>
+</tr>
+<tr class="row-even"><td>Windows Server 2016?</td>
+<td>2016年予定</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>SQL Server</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="17%" />
+<col width="29%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Version</th>
+<th class="head">リリース</th>
+<th class="head">メインストリーム</th>
+<th class="head">延長サポート</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQL Server 2008</td>
+<td>2008年</td>
+<td>2014/07/08</td>
+<td>2019/07/09</td>
+</tr>
+<tr class="row-odd"><td>SQL Server 2008 R2</td>
+<td>2010年</td>
+<td>2014/07/08</td>
+<td>2019/07/09</td>
+</tr>
+<tr class="row-even"><td>SQL Server 2012</td>
+<td>2012年</td>
+<td>2017/07/11</td>
+<td>2022/07/12</td>
+</tr>
+<tr class="row-odd"><td>SQL Server 2014</td>
+<td>2014年</td>
+<td>2019/07/09</td>
+<td>2024/07/09</td>
+</tr>
+</tbody>
+</table>
+<p>ざっくり、OSのサポートもSQL
+Serverのサポートも、5年/10年のサポート期限になっている。クライアントOSも概ね期間は同じ。</p>
+<p>メインストリームサポート中は、セキュリティ更新・機能拡張を含む更新プログラムがサポートされるほか、インシデントサポートが提供される。延長サポートに入ってしまうと、更新プログラムは、セキュリティのもののみになる。(ただし、有償にてセキュリティ以外のサポートを購入できる。)</p>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="../00_references.html">Prev</a></li>
+    
+    
+      <li><a href="02_licenses.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

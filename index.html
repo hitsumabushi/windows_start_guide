@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Windows Server 初心者向け機能ガイド &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="#" />
+    <link rel="next" title="参考文献集" href="contents/00_references.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="#">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="windows-server">
+<h1>Windows Server 初心者向け機能ガイド<a class="headerlink" href="#windows-server" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>Windows Serverを使ったことがないのだけど、使う必要が発生したので、少し真面目にまとめてみる。</p>
+<p>ただし、細かな手順は書かない。
+Windows Serverを使って、『何ができるか』のポインタとして参照できるようにしたいと思う。</p>
+<p>このまとめを始めた段階で最新のWindows ServerがWindows Server 2012 R2のため、
+基本的に、Windows Server 2012 R2基準で書いているので、ライセンスなどでは注意が必要になっている。</p>
+<ol class="arabic simple">
+<li>全体的な参考文献</li>
+</ol>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contents/00_references.html">参考文献集</a></li>
+</ul>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Windows の基本情報</li>
+</ol>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/01_start.html">Windows Server の概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/02_licenses.html">ライセンス</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/03_install_and_setup.html">Windows Server のインストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/04_storage.html">ストレージの管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/05_network.html">ネットワーク</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/01_basics/06_user_management.html">ユーザー管理/グループ管理</a></li>
+</ul>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Windows 管理者向け情報</li>
+</ol>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contents/02_admin/01_active_directory_basics.html">Active Directory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/02_admin/10_ou_and_gpo.html">OUとGPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/02_admin/99_todo.html">Windows Serverでのサービスのインストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/02_admin/99_todo.html#id1">クラスタリング</a></li>
+</ul>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Windows の運用</li>
+</ol>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contents/03_ops/99_todo.html">監視</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/03_ops/99_todo.html#id2">セキュリティ</a></li>
+</ul>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Windows の自動化</li>
+</ol>
+<blockquote>
+<div><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/01_powershell_intro.html">PowerShell の概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/02_powershell_script.html">PowerShell 入門</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/03_powershell_script_intro_tutorial.html">チュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/04_powershell_script_others.html">実践に役立つ雑多な項目</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/10_powershell_dsc.html">PowerShell DSC 入門</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents/04_automation/20_adk.html">sysprep / Windows ADK</a></li>
+</ul>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>索引</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>モジュール索引</span></a></li>
+<li><a class="reference internal" href="search.html"><span>検索ページ</span></a></li>
+</ul>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+    
+      <li><a href="contents/00_references.html">Next</a></li>
+    
+    <li><a href="genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

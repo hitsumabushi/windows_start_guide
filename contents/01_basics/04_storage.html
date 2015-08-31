@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ストレージの管理 &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="ネットワーク" href="05_network.html" />
+    <link rel="prev" title="Windows Server のインストール" href="03_install_and_setup.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="id1">
+<h1>ストレージの管理<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>概要<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Windowsでは、LinuxでいうLVMのようなものから、ストレージプールのようなものを作成するなどのストレージ仮想化まで行うことができる。</p>
+<p><img alt="Overview" src="https://docs.google.com/drawings/d/1PntXZSqpGBjzEebIsTC9psDywfrIdvIbx_QKxeHKoBg/pub?w=960&amp;h=720" /></p>
+<p>ボリュームは、Cドライブなど普段使用しているドライブに当たる概念で、パーティション+ファイルシステムみたいなもの、として理解しておけば大丈夫そう。ただし、ボリュームとパーティションを混同して使うこともあるので、あまり区別して考えないほうが良い。</p>
+</div>
+<div class="section" id="id3">
+<h2>仮想ディスクの種類<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">仮想ディスクとは、VHDファイルと呼ばれるハードディスクイメージを1つのファイルとしてカプセル化したもの。</div>
+<div class="line">Hyper-Vによる仮想マシンにも利用される一方で、通常のHDDのようにデータを保存したり、VHDブートのようにOSをインストールしてブートイメージとして利用できる。</div>
+</div>
+<ul class="simple">
+<li>VHD<ul>
+<li>最大2040GBの仮想ディスクをサポート</li>
+<li>Windows Server 2012以前であっても利用可能</li>
+<li>&#8220;容量固定&#8221;での利用を推奨</li>
+</ul>
+</li>
+<li>VHDX<ul>
+<li>64TBまでの仮想ディスクをサポート</li>
+<li>電源障害児の回復機能もある</li>
+<li>Windows Server 2012以降でのみ利用可能</li>
+<li>&#8220;可変容量&#8221;での利用を推奨</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>パーティションの種類<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>3種類に大別される。</p>
+<ol class="arabic simple">
+<li>アクティブパーティション<ul>
+<li>コンピュータ起動時にどのシステムパーティション(つまりどのOS)を使用するか</li>
+</ul>
+</li>
+<li>システムパーティション<ul>
+<li>OSブート時に使用するファイルがある</li>
+</ul>
+</li>
+<li>ブートパーティション<ul>
+<li>システムファイルがある</li>
+</ul>
+</li>
+</ol>
+<p>インストール時にデフォルトのままにしていると、以下のようになる。</p>
+<ul class="simple">
+<li>ブートローダー用のパーティションがアクティブパーティションかつシステムパーティション</li>
+<li>Cドライブがブートパーティション</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>パーティションスタイル<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">ディスクごとに、パーティションの情報を管理している。この管理方法をパーティションスタイルという。</div>
+<div class="line">Windows Server</div>
+</div>
+<p>2012R2では、BIOSの場合には、MBRが選択され、EFIの場合には、GPTが選択される。</p>
+<ul class="simple">
+<li>MBR<ul>
+<li>プライマリパーティションが4つまで</li>
+</ul>
+</li>
+<li>GPT<ul>
+<li>2TB以上のボリュームを使用する場合に、利用する</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>ディスクの管理方式<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul>
+<li><p class="first">ベーシックディスク</p>
+<p>昔からある形式のディスク。パーティションの種類は以下の2つ。</p>
+<ul class="simple">
+<li>プライマリパーティション</li>
+<li>拡張パーティション</li>
+</ul>
+</li>
+<li><p class="first">ダイナミックディスク</p>
+<div class="line-block">
+<div class="line">色々な付加的な機能が利用できるディスク。ベーシックディスクから、変換も可能。</div>
+<div class="line">ダイナミックでは、パーティションのことを&#8221;ボリューム&#8221;と呼ぶ。</div>
+</div>
+<ul class="simple">
+<li>シンプルボリューム</li>
+<li>スパンボリューム<ul>
+<li>複数のディスクを1つにまとめて、ボリュームにする</li>
+<li>1つのディスクが故障すると、ボリューム全体が使用不可になる</li>
+<li>システムパーティションや、ブートパーティションには使えない</li>
+</ul>
+</li>
+<li>ストライプボリューム<ul>
+<li>複数のディスクを用いて、RAID-0構成をつくる</li>
+<li>システムパーティションや、ブートパーティションには使えない</li>
+</ul>
+</li>
+<li>ミラーボリューム<ul>
+<li>RAID-1 構成をつくる</li>
+</ul>
+</li>
+<li>RAID-5ボリューム<ul>
+<li>RAID-5 構成をつくる</li>
+<li>システムパーティションや、ブートパーティションには使えない</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>記憶域プール/記憶域スペース機能について<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>以下のドキュメントを参照。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://download.microsoft.com/download/0/7/B/07BE7A3C-07B9-4173-B251-6865ADA98E5D/WS2012R2_StorageSpace_ConfigGuide_v1.0.docx">Windows Server 2012 R2
+記憶域スペースのアーキテクチャと設計・管理のベストプラクティス</a></li>
+</ul>
+<div class="section" id="id8">
+<h3>記憶域プール<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">複数のディスクを束ねる機能。</div>
+<div class="line">注意点としては、<strong>後述のキャッシュなどの目的を除き、速度の違うディスクを同じプールに入れない</strong>こと。</div>
+<div class="line">プールに後からディスクを追加することは可能。</div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>記憶域スペース<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">記憶域プール上に作成される、仮想ディスクのこと。</div>
+<div class="line">機能としては、以下のようなものがある。</div>
+</div>
+<ol class="arabic">
+<li><p class="first">レイアウト</p>
+<ul>
+<li><p class="first">記憶域プールに含まれる物理ディスク上の配置方法を決めている</p>
+</li>
+<li><p class="first">選択可能なレイアウトは以下。</p>
+<ul>
+<li><p class="first">シンプル</p>
+<p>RAID-0相当。スループットは良いが、他の方法で冗長性を担保する必要がある。</p>
+</li>
+<li><p class="first">ミラー</p>
+<p>RAID-1相当。1つのデータを2つ/3つに複製して、異なる物理ディスクに保存する。</p>
+</li>
+<li><dl class="first docutils">
+<dt>パリティ</dt>
+<dd><p class="first last">RAID-5 or RAID-6相当の2つから選択可能。</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><div class="first line-block">
+<div class="line">プロビジョニング</div>
+<div class="line-block">
+<div class="line">仮想ディスクを作成するときのサイズ指定方法。</div>
+</div>
+</div>
+<ul class="simple">
+<li>シンプロビジョニング<ul>
+<li>作成する仮想ディスクサイズの領域を、使用されるまで実際には確保しない</li>
+<li>物理容量が、100GBしかなくても、500GBのディスクを作成可能</li>
+<li>デフォルトでは、物理ディスク容量の70%を使用すると、イベントログなどに警告がでるので、記憶域プールにディスクを追加しよう</li>
+</ul>
+</li>
+<li>固定プロビジョニング<ul>
+<li>仮想ディスクと同じ容量を記憶域プールから割り当てる</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">ホットスペア</p>
+<ul class="simple">
+<li>通常は待機状態で、他のディスクが故障した場合の代替ディスクとして動作させるディスク</li>
+<li>Windows Server
+2012R2からは、ホットスペアの代わりに、記憶域プールないの空きディスクや空き領域を使用してディスク障害に対応できる(並行リビルド機能)</li>
+<li>そのため、<strong>Windows Server 2012 R2では推奨でない</strong></li>
+</ul>
+</li>
+<li><p class="first">記憶域階層</p>
+<ul class="simple">
+<li>記憶域プールにSSDとHDDが両方ある場合、ホットデータをSDDに、コールドデータをHDDに、<strong>ブロック単位</strong>で自動配置する機能</li>
+</ul>
+</li>
+<li><p class="first">ライトバックキャッシュ</p>
+<ul class="simple">
+<li>記憶域プールにSSDが存在している場合に、ランダム書き込みのバッファとして利用する機能</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id10">
+<h3>設計時の注意点<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic">
+<li><div class="first line-block">
+<div class="line">必要な物理ディスクの数</div>
+<div class="line">レイアウトごとに耐障害性、最低限必要なディスク数が異なる。</div>
+<div class="line">また、容量については、シンプロビジョニングが使用可能な構成か確認する必要がある。</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line">記憶域プール</div>
+<div class="line">記憶域プールに低速なデバイスを混ぜると、全体のパフォーマンスが低下するため、注意する。</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line">プロビジョニング</div>
+<div class="line">少なくとも以下の場合には、固定プロビジョニングのみ利用可能で、<strong>シンプロビジョニングは選択できない。</strong></div>
+</div>
+<ul class="simple">
+<li>ディアルパリティを利用する場合</li>
+<li>記憶域階層を利用する場合</li>
+</ul>
+</li>
+<li><div class="first line-block">
+<div class="line">記憶域階層、ライトバックキャッシュ</div>
+<div class="line">記憶域階層/ライトバックキャッシュを利用する場合、SSDが必要。</div>
+</div>
+</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="23%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">記憶域階層</th>
+<th class="head">ライトバックキャッシュ</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>シンプル</td>
+<td>1台以上</td>
+<td>1台以上</td>
+</tr>
+<tr class="row-odd"><td>双方向ミラー</td>
+<td>2台以上</td>
+<td>2台以上</td>
+</tr>
+<tr class="row-even"><td>3方向ミラー</td>
+<td>3台以上</td>
+<td>3台以上</td>
+</tr>
+<tr class="row-odd"><td>シングルパリティ</td>
+<td>使用不可</td>
+<td>2台以上</td>
+</tr>
+<tr class="row-even"><td>デュアルパリティ</td>
+<td>使用不可</td>
+<td>3台以上</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id11">
+<h3>その他の制限事項<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic simple">
+<li>記憶域スペースは、ブートドライブ、システムドライブには利用できない</li>
+<li>RAIDコントローラ利用時には、RAID機能を無効化してから使う</li>
+<li>FC, iSCSIはサポート外</li>
+<li>記憶域プール内のディスクは同一セクターサイズ</li>
+<li>記憶域スペースは最大128個 / 1記憶域プール</li>
+</ol>
+</div>
+<div class="section" id="powershell">
+<h3>PowerShellのコマンド<a class="headerlink" href="#powershell" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>メディアの種類がUnknownのものは、コマンドから設定可能。</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>Set-PhysicalDisk -FriendlyName &lt;Disk Name&gt; -MediaType HDD
+Set-PhysicalDisk -FriendlyName &lt;Disk Name&gt; -MediaType SSD
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id12">
+<h2>ファイルシステムについて<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id13">
+<h3>ファイルシステムの種類<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">NTFS</p>
+<ul class="simple">
+<li>現状最も汎用的なファイルシステム</li>
+<li>ファイル、フォルダのアクセス許可</li>
+<li>暗号化(EFS, BitLocker, AD RMS)、圧縮、重複排除などの機能もある<ul>
+<li>とはいえ、パフォーマンスは落ちるので、注意</li>
+<li>フォルダごとに圧縮機能を有効化するなどして、運用でどうにかするしかない</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">ReFS</p>
+<ul class="simple">
+<li>大容量ボリュームでの利用も想定した、信頼性の高いファイルシステム</li>
+<li>ブートボリュームやリムーバブルディスクには使えない</li>
+<li>暗号化、圧縮、重複排除もない</li>
+</ul>
+</li>
+<li><div class="first line-block">
+<div class="line">FAT</div>
+<div class="line-block">
+<div class="line">古くからある。exFATなどもある。</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="03_install_and_setup.html">Prev</a></li>
+    
+    
+      <li><a href="05_network.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

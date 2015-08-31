@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>チュートリアル &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="実践に役立つ雑多な項目" href="04_powershell_script_others.html" />
+    <link rel="prev" title="PowerShell 入門" href="02_powershell_script.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="id1">
+<h1>チュートリアル<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">以下は対話的な環境で行う。</div>
+<div class="line"><code class="docutils literal"><span class="pre">PS&gt;</span></code>は常にプロンプトのことを表しているとする。(実際の操作画面では、パスなども表示されていることがある)</div>
+</div>
+<div class="section" id="id2">
+<h2>ヘルプを見る<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># man
+PS&gt; Get-Help Get-ChildItem
+PS&gt; Get-Help Get-ChildItem -Online
+
+# man -k
+PS&gt; Get-Command *Item*
+PS&gt; Get-Command -Name *Item*
+
+# with options
+PS&gt; Get-Command -Noun item*
+PS&gt; Get-Command -Noun item* -Verb get
+</pre></div>
+</div>
+<p>もしローカルにヘルプを置いておきたいなら、管理者権限で以下を実行する</p>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>PS&gt; Update-Help -UICulture en-us -Force
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>変数の確認<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># ホームの確認
+PS&gt; $PSHOME
+
+# バージョンの確認
+PS&gt; $PSVersionTable
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>基本的なコマンドの実行<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre># cd する
+PS&gt; Set-Location C:\
+
+# cd して push/pop する
+PS&gt; Push-Location D:\
+PS&gt; Pop-Location
+
+# lsする
+PS&gt; Get-ChildItem
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>パイプラインを使う<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;#
+&#39;C:\Program Files\Common Files\System&#39; ディレクトリの中で、ファイルサイズのもっとも大きいファイルは何か?
+#&gt;
+</pre></div>
+</div>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;#
+&#39;C:\Program Files\Common Files\System&#39; ディレクトリの中で、ファイルサイズが100KBより大きなものは何個あるか?
+#&gt;
+</pre></div>
+</div>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;#
+環境変数の一覧を、変数名でソートして、 $HOME\env.txt に保存
+#&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>繰り返しを使う<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;#
+現在実行されているプロセスについて、ID順にソートされた、
+ID名,プロセス名
+というCSV形式で出力する
+#&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>練習問題<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="code PowerShell highlight-python"><div class="highlight"><pre>&lt;#
+Get-Alias コマンドでエイリアスの一覧が取得できる。
+最も多く、エイリアスとして参照されているコマンドレットは何か
+#&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="02_powershell_script.html">Prev</a></li>
+    
+    
+      <li><a href="04_powershell_script_others.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>

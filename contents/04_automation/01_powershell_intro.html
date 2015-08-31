@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PowerShell の概要 &mdash; Windows Start Guide v0.1 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Windows Start Guide v0.1 ドキュメント" href="../../index.html" />
+    <link rel="next" title="PowerShell 入門" href="02_powershell_script.html" />
+    <link rel="prev" title="監視" href="../03_ops/99_todo.html" /> 
+  </head>
+  <body role="document">
+<div id="header">
+  <div id="globalnavi">
+  </div>
+  <div id="titledesign">
+<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+    <h1><a href="../../index.html">Windows Start Guide</a></h1>
+  </div>
+</div>
+
+
+
+
+
+    <div class="document">
+ <div id="document">
+  <div class="section" id="powershell">
+<h1>PowerShell の概要<a class="headerlink" href="#powershell" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>資料<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>初心者用リソース<ul>
+<li><a class="reference external" href="https://technet.microsoft.com/ja-jp/library/dd347730.aspx">Windows PowerShell
+Basics</a></li>
+<li><a class="reference external" href="https://technet.microsoft.com/ja-jp/magazine/hh551144.aspx">Windows PowerShell:
+スクリプト作成の短期集中講座</a></li>
+</ul>
+</li>
+<li>管理用の情報<ul>
+<li><a class="reference external" href="http://download.microsoft.com/download/A/8/B/A8BF66E5-B315-49D0-8EBE-02263B221DCC/Windows_Server_2012_R2_Server_Management_and_Automation_White_Paper.pdf">Windows Server 2012R2サーバーの管理性および自動化 -
+ホワイトペーパー</a></li>
+<li><a class="reference external" href="http://download.microsoft.com/download/B/2/0/B20A660F-787F-4C17-8CE6-35E9789E2CB1/Windows-Server-2012-R2-Server-Management-and-Automation.pdf">Windows Server
+2012R2サーバーの管理性および自動化</a></li>
+</ul>
+</li>
+<li>コマンドリファレンス<ul>
+<li><a class="reference external" href="https://technet.microsoft.com/ja-jp/library/dn249523.aspx">Windows and Windows Server Automation with Windows
+PowerShell</a></li>
+</ul>
+</li>
+<li>Active Directory管理センターの、履歴ビューア機能</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>PowerShell の概論<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Windowsのシェル実行環境のこと。</p>
+<div class="section" id="id3">
+<h3>特徴<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PowerShellの特徴として、以下のようなものがある。</p>
+<ol class="arabic simple">
+<li>コマンド形式は、 {動詞}-{名詞} の形式</li>
+<li>各コマンドは、 .NET Framework のオブジェクトを出力する<ul>
+<li>と、世の説明(Windows PowerShell
+ポケットリファレンス)には書いてあるが、COMオブジェクトも返ってくるのではないか、と思っている</li>
+<li>実際には、少し拡張されている。PowerShellのディレクトリの
+types.ps1.xml にある</li>
+</ul>
+</li>
+<li>WindRMなどの管理系ツールとの連携がある<ul>
+<li>PowerShell DSC(Desired State Configuration)
+と呼ばれる宣言的な管理フレームワークがWindows
+onlyな環境では便利に見える</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>現状<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="37%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">OS Version</th>
+<th class="head">Default .NET Framework</th>
+<th class="head">Default PowerShell</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>2008 R2</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr class="row-odd"><td>7 SP1</td>
+<td>3.5SP1</td>
+<td>2.0</td>
+</tr>
+<tr class="row-even"><td>2012</td>
+<td>4.5</td>
+<td>3.0</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>4.5</td>
+<td>3.0</td>
+</tr>
+<tr class="row-even"><td>2012 R2</td>
+<td>4.5</td>
+<td>4.0</td>
+</tr>
+<tr class="row-odd"><td>8.1</td>
+<td>4.5</td>
+<td>4.0</td>
+</tr>
+<tr class="row-even"><td>10(Tech prevで確認)</td>
+<td>4.5</td>
+<td>5.0</td>
+</tr>
+<tr class="row-odd"><td>2016?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="powershell-5-0">
+<h3>PowerShell 5.0での新機能<a class="headerlink" href="#powershell-5-0" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><a class="reference external" href="https://technet.microsoft.com/en-us/library/hh857339.aspx#BKMK_new50">What&#8217;s New in Windows
+PowerShell</a>
+(英語が嫌な人は、 <a class="reference external" href="http://winscript.jp/powershell/292">わんくま同盟大阪勉強会#62「PowerShell 5.0
+新機能」資料公開</a>
+くらいを見る。現状他に日本語資料がなさそう)</p>
+<p>個人的な注目ポイントは、</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ConvertFrom-String</span></code></li>
+<li>デバッグ系の充実</li>
+<li>PowerShell ISE を利用したリモートのファイル編集</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>PowerShell を実行する方法<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>PowerShell.exe で<ul>
+<li>対話的に実行</li>
+<li><code class="docutils literal"><span class="pre">powershell</span> <span class="pre">-command</span> <span class="pre">{_実行したいコマンド_}</span></code></li>
+<li><code class="docutils literal"><span class="pre">powershell</span> <span class="pre">-file</span> <span class="pre">_スクリプトへのパス_</span></code></li>
+</ul>
+</li>
+<li>PowerShell ISE で開発/実行</li>
+</ul>
+<div class="section" id="execution-policy">
+<h3>Execution-Policy の設定<a class="headerlink" href="#execution-policy" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">PowerShell</div>
+</div>
+<p>はセキュリティ機能の一貫として、スクリプトの実行ポリシーを持っている。
+| これにより、しばしばスクリプトが実行できない。
+| その場合、<code class="docutils literal"><span class="pre">Set-ExecutionPolicy</span></code>
+コマンドを利用して、ポリシーを変更する必要がある。
+| よく使うものは、以下の4つ。</p>
+<ul class="simple">
+<li>Restricted<ul>
+<li>クライアントOSや古いServerでのデフォルト</li>
+<li>すべてのスクリプトを実行しない</li>
+</ul>
+</li>
+<li>AllSigned<ul>
+<li>信頼できる署名のあるコードのみ実行</li>
+</ul>
+</li>
+<li>RemoteSigned<ul>
+<li>Windows Server 2012 R2 でのデフォルト</li>
+<li>ダウンロードしたスクリプトについては、信頼できる署名のあるコードのみ実行</li>
+<li>ローカルファイルは署名なしで実行可能</li>
+</ul>
+</li>
+<li>ByPass<ul>
+<li>すべてのファイルを実行時の確認プロンプトなしに実行する</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+ </div>
+<div id="sidebar">
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    モジュール、クラス、または関数名を入力してください
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+
+      <div class="clearer"></div>
+    </div>
+<div id="related">
+  <ul class="link">
+    
+      <li><a href="../03_ops/99_todo.html">Prev</a></li>
+    
+    
+      <li><a href="02_powershell_script.html">Next</a></li>
+    
+    <li><a href="../../genindex.html">Index</a></li>
+  </ul>
+</div>
+
+<div id="footer">
+  &copy;copyright:2015, hitsumabushi <br />
+  Last update: Aug 31, 2015 <br />
+  Created using Sphinx 1.3.1
+</div>
+
+  </body>
+</html>
